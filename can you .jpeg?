@@ -1,0 +1,9 @@
+Found the original file came from here: http://img3.wikia.nocookie.net/__cb20120205211228/memoryalpha/en/images/4/40/Enterprise_firing_phaser_proximity_blast.jpg
+compared ship.jpg with http://img3.wikia.nocookie.net/__cb20120205211228/memoryalpha/en/images/4/40/Enterprise_firing_phaser_proximity_blast.jpg and found 12 was changed to 11.
+I updated that, and the image displays properly now.
+There are 2 other differences
+
+1: the very end of the file: 01 ff d9 is changed to 2e 2e 2e, there's another section just before it. D4 0A was changed to 2E 2E
+2: at offest 34A87 this: 9a  df f1 5f 91 0e 2d b6 cc  c9 22 89 da 79 e4 59 23  b6 8a 19 10 47 20 5f was changed to this: 58  75 58 2e 6f 76 4e 2e 7a  61 2e 56 49 6a 78 61 45  72 70 72 69 53 65 52 which converts to ASCII of: XuX.ovN.za.VIjxaErpriSeR
+
+I tried to XOR, AND, NOT, and OR that chunk of hex with 2E, 2E2E, and 2E2E2E, but was foiled.
