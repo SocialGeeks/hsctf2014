@@ -1,0 +1,39 @@
+import re
+import csv
+from decimal import *
+from operator import itemgetter
+
+infile = open('junk.txt', 'r')
+
+
+words_found = [i.strip().split() for i in open("wordfinder_out.txt").readlines()]
+
+line_garbage = []
+line_num = 0
+for jumble in infile:
+	jumble_orig = jumble
+	#print "Line " + str(line_num) + " Length is: " + str(len(jumble_orig))
+	words_found[line_num].sort(key=len, reverse=True)
+	#print words_found[line_num]
+	for word in words_found[line_num]:
+		if len(filter(lambda x: word in x, words_found[line_num])) < 2:
+			word_tagged = "<" + word + ">"
+			jumble = jumble.replace(word, word_tagged)
+			#print "word is: " + word + ". jumble is: " + jumble
+	jumble_garbage = re.sub('<[a-z]*>','', jumble)
+	jumble_garbage_adjusted_len = len(jumble_orig) - len(jumble_garbage)
+	#jumble_garbage_adjusted_ratio = float( len(jumble_orig) ) / float( len(jumble_garbage) )
+	
+	line_garbage.append([line_num, len(jumble_garbage), len(jumble), jumble_garbage_adjusted_len])#, jumble_garbage_adjusted_ratio])
+
+	line_num = line_num + 1
+	#if line_num > 500:
+	
+with open('garbage.csv', 'w') as outfile:
+	writer = csv.writer(outfile, delimiter=',')
+	writer.writerows(line_garbage)
+	sorted(line_garbage,key=lambda l:l[3])
+print "done" #line_garbage
+exit()
+	
+
