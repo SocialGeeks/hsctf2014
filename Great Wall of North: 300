@@ -1,0 +1,18 @@
+import numpy
+import networkx as nx
+
+guard_data = numpy.loadtxt(open("C:\VMs\shared\guards\GreatWallOfNorthCase.txt","rb"),dtype=int)
+
+G=nx.DiGraph()
+G.add_weighted_edges_from(guard_data)
+
+print nx.dijkstra_path(G,0,31078657)
+
+is close. It returns the weighted path of: 
+start	end	cost
+0	1613202	1318651
+1613202	5798268	1665086
+5798268	12884135	7172040
+12884135	31078657	1260270
+
+For a total cost of: 11416047 But it's not the flag. =(
