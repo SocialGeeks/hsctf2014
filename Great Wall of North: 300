@@ -70,3 +70,68 @@ DiGraph - shortest_path
 2370689	31078657	86378903
 11416047
 157403050
+
+Write-up at: http://compete.hsctf.com/book/great_wall_of_north/README.html
+
+snip-
+
+Great Wall of North
+
+There are two feasible solutions for this problem.
+Solution 1 - Abstraction to Shortest Path
+
+Take every integer time between 0 and K and represent that as a vertex. Attach edges in the graph based on the given intervals, with edge weights as the weights of the intervals. For example, if N = 6 and K = 4, and the applicants, in the form (s, f, p), are
+
+(0, 1, 2) (1, 2, 4) (0, 3, 1) (2, 3, 3) (3, 4, 2) (2, 4, 5)
+
+then this would be the graph:
+
+Running any shortest path algorithm (Dijkstra's for example) for a path from 0 to K on the actual case would give the answer of 10271912
+Solution 2 - Dynamic Programming
+
+Sort all the intervals by finish time first. Then, you can apply the following recurrence relation:
+
+Here is some java code that applies that relation:
+
+public GreatWallofNorth(int N, int K, int[] s, int[] f, int[] p) {
+
+    int[][] times = new int[s.length][3];
+    for(int i = 0; i < s.length; i++) {
+        times[i][0] = s[i];
+        times[i][1] = f[i];
+        times[i][2] = p[i];
+    }
+
+    System.out.println(dynamicProgram(N, K, times));
+}
+
+public int dynamicProgram(int N, int K, int[][] times) {
+
+    int[] P = new int[K + 1];
+    Arrays.sort(times, new Comparator<int[]>() {
+        public int compare(int[] A, int[] B) {
+            return A[1] - B[1];
+        }
+    });
+    P[0] = 0;
+    for(int i = 1; i < K + 1; i++) {
+        P[i] = Integer.MAX_VALUE;
+    }
+
+    for(int i = 0; i < times.length; i++) {
+        int minVal = Integer.MAX_VALUE;
+        for(int j = 0; j < times.length; j++) {
+            if(times[j][1] == times[i][1]) {
+                if(P[times[j][0]] + times[j][2] < 0) {
+                    continue;
+                }
+                minVal = Math.min(minVal, P[times[j][0]] + times[j][2]);
+            }
+        }
+
+        P[times[i][1]] = minVal;
+    }
+
+    return P[K];
+}
+
