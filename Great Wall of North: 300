@@ -135,3 +135,54 @@ public int dynamicProgram(int N, int K, int[][] times) {
     return P[K];
 }
 
+**********
+Asked in chat:
+<mib_txwzax>: Can anybody give me a clue why my Dijkstra gave a different length than the flag? http://pastebin.com/Ps0gAfSF
+<_alex>: are you sure you linked the guards together properly?
+<VeniVidiVici42>: what are you using djikstra for
+<_alex>: it looks like he used the price to weight a graph across the connected segments
+<_alex>: I'm not seeing an immediate problem...
+<mib_txwzax>: I tried dijsktra, bellman-ford, and FW. They all returned the same length/added price of all the guards. But it didn't match the flag
+<VeniVidiVici42>: for what problem
+<mib_txwzax>: GreatWallGuards
+<VeniVidiVici42>: are you overflowing in intermediate steps
+<_alex>: I got the right flag but I did it a different way
+<_alex>: probably not veni, the library is doing most of the work
+<_alex>: I'm trying to think of whether or not the rule that you can't overlap could be affecting this
+<_alex>: was your price too low?
+<_alex>: I'm picturing that it might be that it back-tracked to get a lower price which violated the problem semantics
+<VeniVidiVici42>: well wait a second
+<VeniVidiVici42>: if you're using djikstra
+<VeniVidiVici42>: you're not doing it right
+<VeniVidiVici42>: like
+<VeniVidiVici42>: you can't go backwards
+<VeniVidiVici42>: guards from [1,5] [5,6] [6,2] [2,31078657] don't work
+<VeniVidiVici42>: for example
+<mib_txwzax>: The write-up says Dijkstra should work
+<_alex>: yeah that's what I was saying
+<_alex>: except his price is too high not too low
+<ben_edelman>: Goodnight. Once more, upvote us on https://news.ycombinator.com/item?id=7798885.
+<VeniVidiVici42>: djikstra should work if you consier the edges to be directed
+<mib_txwzax>: yes, the graph was directed from DiGraph
+<_alex>: ben I have a solution for north that isn't listed
+<_alex>: where do I send that to
+<_alex>: hmm I can't think of any reason your code should fail in a way that gives a higher price
+<mib_txwzax>: The path it came back with was: [0, 1613202, 5798268, 12884135, 31078657] which doesn't overlap, and I sum'ed the price of each guard by hand and it came out to the same value.
+<_alex>: lemme check what my path is
+<mib_xzk30o>: sorry the limitation was
+<mib_xzk30o>: array list
+<_alex>: well that's awkward
+<_alex>: my method doesn't actually allow easily finding the path
+<_alex>: your price never showed up as a candidate in mine
+<mib_txwzax>: I guess the networkx lib didn't do it right. Thanks _alex
+<_alex>: that's weird though, I don't see how that would fail
+<_alex>: presumably the library is correct... I assume it's a common library (I don't use python much)
+<mib_txwzax>: networkx seems to be popular with production code, so I'm puzzled how it wouldn't do it properly.
+<_alex>: it looks like it might have found the shortest path in terms of node count
+<_alex>: actually
+<mib_txwzax>: nope, I experimented with that too. There is a 2-step path that it found with another algo
+<_alex>: the documentation says the weights are distances not rewards so I really have no idea
+<_alex>: if you're sure you had all the edges in the file that looks like a bug report to me
+<mib_txwzax>: thx _alex
+<ErnestChiu>: @_alex send it to jacob@hsctf.com
+<ErnestChiu>: Any comments on the writeups?
